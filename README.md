@@ -3,7 +3,7 @@
 [![NPM Version][npm-image]][npm-url]
 [![Node Version][node-image]][node-url]
 
-The thrift middle of Koa.
+The grpc middle of Koa.
 
 ## Installation
 
@@ -16,73 +16,84 @@ npm i koa-grpc -S
 - simple app
 
 ```typescript
-var UnpkgService = require('./gen-nodejs/UnpkgService');
 import { Context } from 'koa';
-import KoaThrift from 'koa-grpc';
+import KoaGrpc from 'koa-grpc';
+var { GreeterService } = require('./gen_code/helloworld_grpc_pb');
 
-const app = new KoaThrift({ service: UnpkgService });
+const app = new KoaGrpc({ service: GreeterService });
 
 // not found
 app.use((ctx: Context) => {
-  console.log('ctx.request: ', ctx.request);
+  console.log('ctx.request: ', (ctx.request as any).getName());
 });
 
-// result -> InvalidOperation TApplicationException: Not Found
+// result -> Error: 12 UNIMPLEMENTED: Not Found
 
-app.listen(9090);
-console.log('listening on 9090...');
+app.listen('0.0.0.0:50051');
+console.log('listening on 50051...');
 ```
 
 - with route
 
 ```typescript
-var UnpkgService = require('./gen-nodejs/UnpkgService');
-const mount = require('koa-mount');
 import { Context } from 'koa';
-import KoaThrift from 'koa-grpc';
+import KoaGrpc from 'koa-grpc';
+const mount = require('koa-mount');
 
-const app = new KoaThrift({ service: UnpkgService });
+var { GreeterService } = require('./gen_code/helloworld_grpc_pb');
+var messages = require('./gen_code/helloworld_pb');
+
+const app = new KoaGrpc({ service: GreeterService });
 
 // with route
 app.use(
-  mount('/Publish', function (ctx: Context) {
-    console.log('ctx.request: ', ctx.request);
-    ctx.body = { code: 0, message: 'publish success' };
+  mount('/sayHello', function (ctx: Context) {
+    console.log('ctx.request: ', (ctx.request as any).getName());
+
+    var reply = new messages.HelloReply();
+    reply.setMessage('Hello ' + ctx.call.request.getName());
+    ctx.body = reply;
   })
 );
 
-app.listen(9090);
-console.log('listening on 9090...');
+app.listen('0.0.0.0:50051');
+console.log('listening on 50051...');
 ```
 
 - use middleware
 
 ```typescript
-var UnpkgService = require('./gen-nodejs/UnpkgService');
-const mount = require('koa-mount');
 import { Context } from 'koa';
-import KoaThrift from 'koa-grpc';
+import KoaGrpc from 'koa-grpc';
+const mount = require('koa-mount');
 
-const app = new KoaThrift({ service: UnpkgService });
+var { GreeterService } = require('./gen_code/helloworld_grpc_pb');
+var messages = require('./gen_code/helloworld_pb');
+
+const app = new KoaGrpc({ service: GreeterService });
 
 // use middleware
 app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
-  console.log( `process ${ctx.path} request from ${ctx.ip} cost ${Date.now() - start}ms`);
+  console.log(`process ${ctx.path} request from ${ctx.ip} cost ${Date.now() - start}ms`);
 });
 
 // with route
 app.use(
-  mount('/Publish', async (ctx: Context) => {
-    console.log('ctx.request: ', ctx.request);
-    await sleep(300);
-    ctx.body = { code: 0, message: 'publish success' };
+  mount('/sayHello', async function (ctx: Context) {
+    console.log('ctx.request: ', (ctx.request as any).getName());
+
+    var reply = new messages.HelloReply();
+    reply.setMessage('Hello ' + ctx.call.request.getName());
+
+    await sleep(300); // wait sth
+    ctx.body = reply;
   })
 );
 
-app.listen(9090);
-console.log('listening on 9090...');
+app.listen('0.0.0.0:50051');
+console.log('listening on 50051...');
 
 function sleep(delay = 1000) {
   return new Promise((resolve) => setTimeout(resolve, delay));
@@ -100,7 +111,9 @@ examples with client are listed at [examples](https://github.com/cooperhsiung/ko
 
 ## Others
 
-[Thrift Missing Guide](https://diwakergupta.github.io/thrift-missing-guide)
+[grpc node.js part quickstart](https://grpc.io/docs/languages/node/quickstart/)
+
+[more node.js examples](https://github.com/grpc/grpc/tree/master/examples/node)
 
 ## License
 
