@@ -13,7 +13,7 @@ npm i koa-grpc -S
 
 ## Usage
 
-- simple app
+### simple app
 
 ```typescript
 import { Context } from 'koa';
@@ -33,7 +33,7 @@ app.listen('0.0.0.0:50051');
 console.log('listening on 50051...');
 ```
 
-- with route
+### with route
 
 ```typescript
 import { Context } from 'koa';
@@ -60,7 +60,7 @@ app.listen('0.0.0.0:50051');
 console.log('listening on 50051...');
 ```
 
-- use middleware
+### use middleware
 
 ```typescript
 import { Context } from 'koa';
@@ -104,16 +104,11 @@ function sleep(delay = 1000) {
 
 examples with client are listed at [examples](https://github.com/cooperhsiung/koa-grpc/tree/master/examples)
 
-## Todo
-
-- [ ] middleware
-- [ ] wrap client
-
 ## Others
 
 [grpc node.js part quickstart](https://grpc.io/docs/languages/node/quickstart/)
 
-[more node.js examples](https://github.com/grpc/grpc/tree/master/examples/node)
+[more node.js examples from official](https://github.com/grpc/grpc/tree/master/examples/node)
 
 ## License
 

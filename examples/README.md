@@ -5,3 +5,5 @@ npm install -g grpc-tools
 cd ./examples
 grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./gen_code --grpc_out=grpc_js:./gen_code helloworld.proto
 ```
+
+[more node.js examples from official](https://github.com/grpc/grpc/tree/master/examples/node)
