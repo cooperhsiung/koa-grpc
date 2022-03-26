@@ -1,0 +1,33 @@
+{
+  "name": "koa-grpc",
+  "version": "1.0.0",
+  "description": "The grpc middle of Koa.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooperhsiung/koa-grpc.git"
+  },
+  "keywords": [
+    "koa",
+    "grpc"
+  ],
+  "author": "Cooper Hsiung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cooperhsiung/koa-grpc/issues"
+  },
+  "homepage": "https://github.com/cooperhsiung/koa-grpc#readme",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.10",
+    "@grpc/proto-loader": "^0.6.9",
+    "koa": "^2.13.4",
+    "koa-compose": "^4.1.0",
+    "koa-mount": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/koa-compose": "^3.2.5"
+  }
+}
