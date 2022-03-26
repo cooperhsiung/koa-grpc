@@ -100,6 +100,14 @@ function sleep(delay = 1000) {
 }
 ```
 
+## Generate code
+
+```sh
+npm install -g grpc-tools
+cd ./examples
+grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./gen_code --grpc_out=grpc_js:./gen_code helloworld.proto
+```
+
 ## Examples
 
 examples with client are listed at [examples](https://github.com/cooperhsiung/koa-grpc/tree/master/examples)
