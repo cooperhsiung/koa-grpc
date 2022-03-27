@@ -31,6 +31,7 @@ class Application extends Koa {
     const context = {
       path: '/' + method,
       originalUrl: '/' + method,
+      method: 'GET', // default method
     } as Context;
     const request = (context.request = Object.create(this.request));
     const response = (context.response = Object.create(this.response));
